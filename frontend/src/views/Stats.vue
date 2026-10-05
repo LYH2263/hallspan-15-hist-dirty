@@ -4,9 +4,10 @@ import { api } from '../api'
 const s = ref<any>({})
 onMounted(async () => { s.value = await api('/seating/stats?hall_id=1') })
 </script>
+
 <template>
   <h1>统计</h1>
-  <p class="sub">排座占用与违规汇总</p>
+  <p class="sub">当前方案占用与违规汇总（方案 #{{ s.plan_id }} · {{ s.created_at }}）</p>
   <div class="card" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:1rem">
     <div><div class="muted">已排座</div><div class="stat">{{ s.seated }}</div></div>
     <div><div class="muted">未排上</div><div class="stat">{{ s.unplaced }}</div></div>

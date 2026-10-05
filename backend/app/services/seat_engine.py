@@ -29,15 +29,20 @@ def neighbors4(r: int, c: int, rows: int, cols: int) -> list[tuple[int, int]]:
             out.append((nr, nc))
     return out
 
-def place_candidates(rows: int, cols: int, min_dist: int, candidates: list[dict]) -> tuple[list[SeatAssign], list[dict]]:
-    """Greedy: try seats row-major; accept if manhattan >= min_dist to all placed AND no same paper 4-neigh."""
+def place_candidates(rows: int, cols: int, min_dist: int, candidates: list[dict],
+                     blocked: list[list[int]] | None = None) -> tuple[list[SeatAssign], list[dict]]:
+    """Greedy: try seats row-major; accept if manhattan >= min_dist to all placed AND no same paper 4-neigh.
+
+    blocked: 禁坐格 [[r, c], ...]，永不落座。
+    """
+    blocked_set = {tuple(p) for p in (blocked or [])}
     occupied: dict[tuple[int, int], SeatAssign] = {}
     unplaced: list[dict] = []
     for cand in candidates:
         placed = False
         for r in range(rows):
             for c in range(cols):
-                if (r, c) in occupied:
+                if (r, c) in occupied or (r, c) in blocked_set:
                     continue
                 ok = True
                 for pos, other in occupied.items():
@@ -80,10 +85,12 @@ def find_violations(rows: int, cols: int, min_dist: int, assigns: list[SeatAssig
                                        f"同试卷套 {a.paper_id} 四邻相邻"))
     return viols
 
-def plan_to_dict(assigns: list[SeatAssign], unplaced: list[dict], viols: list[Violation], rows: int, cols: int) -> dict:
+def plan_to_dict(assigns: list[SeatAssign], unplaced: list[dict], viols: list[Violation], rows: int, cols: int,
+                 blocked: list[list[int]] | None = None) -> dict:
     return {
         "rows": rows,
         "cols": cols,
+        "blocked_seats": [list(p) for p in (blocked or [])],
         "assignments": [asdict(a) for a in assigns],
         "unplaced": unplaced,
         "violations": [asdict(v) for v in viols],

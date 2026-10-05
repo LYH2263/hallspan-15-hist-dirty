@@ -11,6 +11,8 @@ class Hall(Base):
     rows: Mapped[int] = mapped_column(Integer)
     cols: Mapped[int] = mapped_column(Integer)
     min_manhattan: Mapped[int] = mapped_column(Integer, default=2)
+    # 现网禁坐格，JSON 文本，形如 "[[r,c],[r,c]]"；仅影响新排座，不回写历史方案
+    blocked_seats: Mapped[str] = mapped_column(Text, default="[]")
 
 class PaperSet(Base):
     __tablename__ = "paper_sets"
@@ -31,4 +33,7 @@ class SeatPlan(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     hall_id: Mapped[int] = mapped_column(ForeignKey("halls.id"))
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
+    # 生成当时的座位/违规结果快照。历史方案只读：任何接口不得 UPDATE 本字段
     result_json: Mapped[str] = mapped_column(Text, default="{}")
+    # 生成当时的约束快照（最小距/禁坐/各考生套别），用于漂移对比；同样只写一次
+    constraints_json: Mapped[str] = mapped_column(Text, default="{}")

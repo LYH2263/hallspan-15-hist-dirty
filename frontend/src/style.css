@@ -133,6 +133,27 @@ h1 {
   background: #fde8e6;
   box-shadow: 0 0 0 2px rgba(192,57,43,0.35);
 }
+.hs-desk.hs-blocked {
+  background: repeating-linear-gradient(45deg, #d8d0c0, #d8d0c0 6px, #c9c0ae 6px, #c9c0ae 12px);
+  color: #7a6a4a; border-style: solid; box-shadow: none;
+  font-weight: 700;
+}
+.hs-drift {
+  background: rgba(192,86,33,0.12);
+  border: 1px solid var(--hs-paper-b);
+  color: var(--hs-paper-b);
+  padding: 0.5rem 0.75rem; border-radius: 2px; margin: 0.5rem 0;
+  font-family: "Segoe UI", "PingFang SC", sans-serif; font-size: 0.82rem;
+}
+.hs-plan-bar {
+  display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;
+  font-family: "Segoe UI", "PingFang SC", sans-serif; font-size: 0.85rem;
+}
+.hs-plan-bar select, .hs-input, .hs-roster-row select {
+  font-family: "Segoe UI", "PingFang SC", sans-serif; font-size: 0.82rem;
+  padding: 0.3rem 0.45rem; border: 1px solid #b0a890; border-radius: 2px;
+  background: #fdfbf6; color: var(--hs-ink);
+}
 .hs-desk .hs-paper-tag {
   position: absolute; top: 2px; right: 3px;
   font-size: 0.58rem; font-weight: 800;

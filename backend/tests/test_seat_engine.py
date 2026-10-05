@@ -31,3 +31,9 @@ def test_violation_detection():
     kinds = {v.kind for v in viols}
     assert "distance" in kinds
     assert "same_paper_adjacent" in kinds
+
+def test_blocked_seats_never_assigned():
+    cands = [{"id": i, "name": f"C{i}", "ticket_no": f"T{i}", "paper_id": i} for i in range(1, 4)]
+    assigns, unplaced = place_candidates(2, 2, 1, cands, blocked=[[0, 0], [0, 1]])
+    assert all((a.row, a.col) not in {(0, 0), (0, 1)} for a in assigns)
+    assert len(assigns) + len(unplaced) == 3
